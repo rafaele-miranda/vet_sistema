@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends 'base.html' %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+{% block content %}
+
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <h2 class="text-primary mb-4">Cadastro</h2>
+        <form method="POST" class="border p-4 bg-white rounded shadow-sm">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success mt-3">Salvar</button>
+            {% if animal %}
+                <a href="{% url 'delete_medicamento' animal.id %}" class="btn btn-danger mt-3 ml-2">Remover</a>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- Bootstrap JS  -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}
+</body>
+</html>
