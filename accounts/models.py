@@ -26,7 +26,7 @@ class DadosAnimal(models.Model):
     
     chip = [
         ('s', 'SIM'),
-        ('n', 'NÃO'),
+        ('n', 'NÃOasdasdasda'),
     ]
     
     nome = models.CharField(max_length=100)
