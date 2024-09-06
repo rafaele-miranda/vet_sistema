@@ -51,7 +51,7 @@ class Medicamento(models.Model):
     
 
 class Procedimento(models.Model):
-  tipo_procedimento = models.CharField(max_length=100)
+  tipo_procedimento = models.CharField(max_length=100, verbose_name='Tipo de Procedimento')
   data = models.DateTimeField()
   veterinario_responsavel = models.CharField(max_length=100, verbose_name='Veterinário responsável')
   observacao = models.CharField(max_length=100, verbose_name='Observação')
