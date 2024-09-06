@@ -60,7 +60,7 @@ class Medicamento(models.Model):
     
 
 class Procedimento(models.Model):
-  tipo_procedimento = models.CharField(max_length=100, choices=proced, default='1')
+  tipo_procedimento = models.CharField(max_length=100, choices=proced, default='')
   data = models.DateTimeField()
   veterinario_responsavel = models.CharField(max_length=100, verbose_name='Veterinário ')
   observacao = models.CharField(max_length=100, verbose_name='Observação')
