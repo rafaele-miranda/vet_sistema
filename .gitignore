@@ -1,2 +1,7 @@
 # IDE settings
 .idea
+
+# Virtual environment
+.venv
+
+**/__pycache__/
