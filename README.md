@@ -54,9 +54,37 @@ python -m pip install -r requirements.txt
 
 O arquivo `requirements.txt` contêm as dependências do projeto.
 
+### Executando as migrations
+Toda vez que uma nova migração for adicionada por você ou outra pessoa o comando abaixo deverá ser executado novamente.
+Você também deve executá-lo na primeira vez durante o setup do projeto.
+
+> **Aviso**: NUNCA modifique um arquivo de migração que já foi mesclado na branch `main` no remote, pois
+são altas as chances de quebrar o esquema da database. Para alterar uma tabela ou campo crie um novo arquivo de migração.
+
+De dentro do Virtual Environment rode as migrações para criar as tabelas do banco de dados:
+
+```shell
+python manage.py migrate
+```
+
 ### Subindo o servidor
 De dentro do Virtual Environment excute comando abaixo para rodar o servidor Django:
 
 ```shell
 python manage.py runserver
 ```
+
+### Criando migrations
+Ao final de suas edições dos [models](accounts/models.py) você deve criar uma nova migração para atualizar os esquemas do banco de dados.
+Saiba mais [aqui](https://docs.djangoproject.com/en/5.1/intro/tutorial02/#creating-models).
+
+Para criar uma nova migration basta executar o comando abaixo. Um novo arquivo de migration será criado dentro do diretório
+`accounts/migrations`
+
+```shell
+python manage.py makemigrations accounts
+```
+
+> **Nota**: Você deve ter lido acima que não se deve alterar uma migration que já foi mesclada na branch `main` no remote.
+Todavia você pode e deve apagar e gerar uma nova migration que você está mexendo localmente. Apenas quando a sua migration
+for mesclada na `main` é que ela não poderá ser modificada.
