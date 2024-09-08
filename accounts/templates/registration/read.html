@@ -42,8 +42,24 @@
                 </li>
             {% endfor %}
         </ul>
-        <a href="{% url 'cadastro_procedimento' %}" class="btn btn-primary">Adicionar Procedimento</a>
+        <a href="{% url 'cadastro_procedimento' %}" class="btn btn-primary mb-5">Adicionar Procedimento</a>
+
+        <h2 class="text-primary">Relatórios</h2>
+        <form method="GET" action="{% url 'relatorio' %}">
+            <div class="form-group">
+                <label for="animalSelect">Selecione um animal</label>
+                <select class="form-control" id="animalSelect" name="animal_id">
+                    {% for animal in dados_animal %}
+                        <option value="{{ animal.id }}">{{ animal.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Gerar Relatório</button>
+        </form>
+        
     </div>
+
+    
 
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

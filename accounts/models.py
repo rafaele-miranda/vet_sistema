@@ -2,15 +2,7 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 from django.core.validators import RegexValidator
 
-proced = [
-      ('vacinacao', 'Vacinação'),
-      ('castracao', 'Castração'),
-      ('lab', 'Exames laboratoriais'),
-      ('imagem', 'Exames de imagem'),
-      ('tumor', 'Remoção de tumores'),
-      ('limpeza', 'Limpeza dental'),
-      ('cirurgia', 'Cirurgia'),
-    ]
+
 
 class CustomUser(AbstractUser):
   groups = models.ManyToManyField(Group, related_name='customuser_set', blank=True)
@@ -60,7 +52,16 @@ class Medicamento(models.Model):
     
 
 class Procedimento(models.Model):
-  tipo_procedimento = models.CharField(max_length=100, choices=proced, default='1')
+  procedimento = [
+      ('vacinacao', 'Vacinação'),
+      ('castracao', 'Castração'),
+      ('lab', 'Exames laboratoriais'),
+      ('imagem', 'Exames de imagem'),
+      ('tumor', 'Remoção de tumores'),
+      ('limpeza', 'Limpeza dental'),
+      ('cirurgia', 'Cirurgia'),
+    ]
+  tipo_procedimento = models.CharField(max_length=100, choices=procedimento, default='1')
   data = models.DateTimeField()
   veterinario_responsavel = models.CharField(max_length=100, verbose_name='Veterinário responsável')
   observacao = models.CharField(max_length=100, verbose_name='Observação')

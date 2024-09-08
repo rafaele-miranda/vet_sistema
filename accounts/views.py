@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.views import generic
 from django.urls import reverse_lazy
 from .models import DadosAnimal, Medicamento, Procedimento
@@ -23,6 +23,7 @@ def read(request):
     dic['dados_animal'] = DadosAnimal.objects.all()
     dic['dados_medicamento'] = Medicamento.objects.all()
     dic['dados_procedimento'] = Procedimento.objects.all()
+    dic['animais'] = DadosAnimal.objects.all()
     return render(request, 'registration/read.html', dic)
 
 def cadastro_animal(request):
@@ -107,5 +108,20 @@ def deleteProcedimento(request, pk):
     procedimento.delete()
     return redirect('read')
 
-    
+def animal_relatorio(request):
+    animal_id = request.GET.get('animal_id') 
+    if animal_id:
+        animal = get_object_or_404(DadosAnimal, id=animal_id)
+        medicamentos = animal.medicamentos.all()
+        procedimentos = animal.procedimentos.all()
+
+        context = {
+            'animal': animal,
+            'medicamentos': medicamentos,
+            'procedimentos': procedimentos,
+        }
+
+        return render(request, 'relatorio.html', context)
+    else:
+        return redirect('read')  
         

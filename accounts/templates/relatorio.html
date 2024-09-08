@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório</title>
+</head>
+<body>
+    <h1>Relatório de {{ animal.nome }}</h1>
+
+    <h2>Dados do Animal</h2>
+    <p>Nome: {{ animal.nome }}</p>
+    <p>Tipo: {{ animal.tipo_animal }}</p>
+    <p>Raça: {{ animal.raca }}</p>
+    <p>Sexo: {{ animal.get_sexo_display }}</p>
+    <p>Peso: {{ animal.peso }}kg</p>
+    <p>Microchip: {{ animal.get_microchip_display }}</p>
+    <p>Tutor: {{ animal.tutor }}</p>
+    <p>Telefone: {{ animal.telefone }}</p>
+    <p>Endereço: {{ animal.endereco }}</p>
+
+    <h2>Medicamentos</h2>
+    <ul>
+        {% for medicamento in medicamentos %}
+            <li>{{ medicamento.medicamento }} - {{ medicamento.dosagem }} - {{ medicamento.frequecia }} - {{ medicamento.duracao }}</li>
+        {% empty %}
+            <li>Sem medicamentos registrados.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Procedimentos</h2>
+    <ul>
+        {% for procedimento in procedimentos %}
+            <li>{{ procedimento.get_tipo_procedimento_display }} - {{ procedimento.data }} - {{ procedimento.veterinario_responsavel }}</li>
+        {% empty %}
+            <li>Sem procedimentos registrados.</li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
