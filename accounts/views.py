@@ -18,6 +18,7 @@ def dashboard(request):
 def home(request):
     return render(request, 'registration/home.html')
 
+@login_required
 def read(request):
     dic = {}
     dic['dados_animal'] = DadosAnimal.objects.all()
@@ -26,6 +27,7 @@ def read(request):
     dic['animais'] = DadosAnimal.objects.all()
     return render(request, 'registration/read.html', dic)
 
+@login_required
 def cadastro_animal(request):
     dic = {}
     form = DadosAnimalForm(request.POST or None)
@@ -54,7 +56,7 @@ def delete(request, pk):
     animal.delete()
     return redirect('read')
 
-
+@login_required
 def cadastro_medicamento(request):
     dic = {}
     form = MedicamentoForm(request.POST or None)
@@ -81,6 +83,7 @@ def deleteMedicamento(request, pk):
     medicamento.delete()
     return redirect('read')
 
+@login_required
 def cadastro_procedimento(request):
     dic = {}
     form = ProcedimentoForm(request.POST or None)
@@ -125,3 +128,5 @@ def animal_relatorio(request):
     else:
         return redirect('read')  
         
+def timeout_view(request):
+    return render(request, 'timeout.html')
