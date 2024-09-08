@@ -4,6 +4,12 @@
 
 > **Nota:** Setup feito para Windows.
 
+
+### Antes de começar
+
+Esse projeto usa [Django](https://www.djangoproject.com/). Se você não está familiarizado com Django
+faça o tutorial [Escrevendo seu primeiro app Django](https://docs.djangoproject.com/pt-br/5.1/intro/tutorial01/).
+
 ### Prerequisitos
 
 É necessários ter os seguintes softwares instalados:
@@ -74,9 +80,9 @@ De dentro do Virtual Environment excute comando abaixo para rodar o servidor Dja
 python manage.py runserver
 ```
 
-### Criando migrations
+### Criando modelos e migrations
 Ao final de suas edições dos [models](accounts/models.py) você deve criar uma nova migração para atualizar os esquemas do banco de dados.
-Saiba mais [aqui](https://docs.djangoproject.com/en/5.1/intro/tutorial02/#creating-models).
+Saiba mais [aqui](https://docs.djangoproject.com/pt-br/5.1/intro/tutorial02/#creating-models).
 
 Para criar uma nova migration basta executar o comando abaixo. Um novo arquivo de migration será criado dentro do diretório
 `accounts/migrations`
