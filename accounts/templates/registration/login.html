@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+{% extends 'base.html' %}
+{% block content %}
     <!-- Bootstrap CSS -->
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     {% load static %}
@@ -10,7 +12,7 @@
 </head>
 <body>
     <h2 class="text-primary mb-4">Login</h2>
-    <form method="post" action="{% url 'login' %}" class="border p-4 bg-white rounded shadow-sm">
+    <form method="post" action="{% url 'login' %}" class="border p-4 bg-white rounded shadow-sm mb-3">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Login</button>
@@ -28,3 +30,4 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+{% endblock %}

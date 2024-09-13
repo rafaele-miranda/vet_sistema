@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+{% extends 'base.html' %}
+{% block content %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
@@ -11,14 +13,11 @@
     <h1>Bem-vindo ao seu painel, {{ user.username }}!</h1>
     <p>Esta é a sua página de dashboard.</p>
     <a href="{% url 'read' %}" class="btn btn-primary mb-2">Verificar pacientes</a>
-    <form method="post" action="{% url 'logout' %}" >
-        {% csrf_token %}
-        <button type="submit" class="btn btn-primary">Sair</button>
-    </form>
-
+    
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+{% endblock %}
