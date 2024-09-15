@@ -94,3 +94,9 @@ python manage.py makemigrations accounts
 > **Nota**: Você deve ter lido acima que não se deve alterar uma migration que já foi mesclada na branch `main` no remote.
 Todavia você pode e deve apagar e gerar uma nova migration que você está mexendo localmente. Apenas quando a sua migration
 for mesclada na `main` é que ela não poderá ser modificada.
+
+### Criando um usuário administrador
+Gerar um site de administração para sua equipe ou clientes para adicionar, alterar, e deletar conteúdo é uma tarefa tediosa que não requer muita criatividade. Por essa razão, o Django automatiza totalmente a criação da interface de administração para os modelos.
+
+Para criar um usuário administrador siga esse [tutorial](https://docs.djangoproject.com/pt-br/5.1/intro/tutorial02/#creating-an-admin-user).
+
