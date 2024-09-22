@@ -1,41 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Relatório</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Relatório de {{ animal.nome }}</h1>
+<body class="container mt-5 bg-light">
+    <h1 class="text-primary">Relatório de {{ animal.nome }}</h1>
 
-    <h2>Dados do Animal</h2>
-    <p>Nome: {{ animal.nome }}</p>
-    <p>Tipo: {{ animal.tipo_animal }}</p>
-    <p>Raça: {{ animal.raca }}</p>
-    <p>Sexo: {{ animal.get_sexo_display }}</p>
-    <p>Peso: {{ animal.peso }}kg</p>
-    <p>Microchip: {{ animal.get_microchip_display }}</p>
-    <p>Tutor: {{ animal.tutor }}</p>
-    <p>Telefone: {{ animal.telefone }}</p>
-    <p>Endereço: {{ animal.endereco }}</p>
+    <h2 class="text-info mt-5">Dados do Animal</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Raça</th>
+                <th scope="col">Sexo</th>
+                <th scope="col">Peso (Kg)</th>
+                <th scope="col">Microchip</th>
+                <th scope="col">Tutor</th>
+                <th scope="col">Telefone</th>
+                <th scope="col">Endereço</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td scope="row">{{ animal.nome }}</td>
+                <td>{{ animal.tipo_animal }}</td>
+                <td>{{ animal.raca }}</td>
+                <td>{{ animal.get_sexo_display }}</td>
+                <td>{{ animal.peso }}</td>
+                <td>{{ animal.get_microchip_display }}</td>
+                <td>{{ animal.tutor }}</td>
+                <td>{{ animal.telefone }}</td>
+                <td>{{ animal.endereco }}</td>
+            </tr>
+        </tbody>
+    </table>
 
-    <h2>Medicamentos</h2>
-    <ul>
-        {% for medicamento in medicamentos %}
-            <li>{{ medicamento.medicamento }} - {{ medicamento.dosagem }} - {{ medicamento.frequecia }} - {{ medicamento.duracao }}</li>
-        {% empty %}
-            <li>Sem medicamentos registrados.</li>
-        {% endfor %}
-    </ul>
+    <h2 class="text-info mt-5">Medicamentos</h2>
+    {% if medicamentos.count == 0 %}
+    <h3>Sem medicamentos registrados.</h3>
+    {% else %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Nome do medicamento</th>
+                <th scope="col">Dosagem</th>
+                <th scope="col">Frequência</th>
+                <th scope="col">Duração</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for medicamento in medicamentos %}
+                <tr>
+                    <th scope="row">{{ medicamento.medicamento }}</th>
+                    <td>{{ medicamento.dosagem }}</td>
+                    <td>{{ medicamento.frequecia }}</td>
+                    <td>{{ medicamento.duracao }}</td>
+                </tr>
+            {% endfor %}       
+        </tbody>
+    </table>
+    {% endif %}
 
-    <h2>Procedimentos</h2>
-    <ul>
-        {% for procedimento in procedimentos %}
-            <li>{{ procedimento.get_tipo_procedimento_display }} - {{ procedimento.data }} - {{ procedimento.veterinario_responsavel }}</li>
-        {% empty %}
-            <li>Sem procedimentos registrados.</li>
-        {% endfor %}
-    </ul>
+    <h2 class="text-info mt-5">Procedimentos</h2>
+    {% if procedimentos.count == 0 %}
+    <h3>Sem procedimentos registrados.</h3>
+    {% else %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Nome do procedimento</th>
+                <th scope="col">Data</th>
+                <th scope="col">Veterinário Responsável</th>
+                <th scope="col">Observação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for procedimento in procedimentos %}
+                <tr>
+                    <th scope="row">{{ procedimento.get_tipo_procedimento_display }}</th>
+                    <td>{{ procedimento.data }}</td>
+                    <td>{{ procedimento.veterinario_responsavel }}</td>
+                    <td>{{ procedimento.observacao }}</td>
+                </tr>
+            {% endfor %}       
+        </tbody>
+    </table>
+    {% endif %}
 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
