@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+{% extends "base.html" %}
+{% load static %}
+{% block content %} 
+<div class="container mt-3">
+    <div class="d-flex flex-wrap gap-5 justify-content-center align-items-center">
+        <div class="d-flex flex-column">  
+            {% if perfil.foto %}
+            <img src="{{perfil.foto.url}}" class="img-thumbnail border rounded" width="280" alt="">
+            {% else %}
+            <img src="{% static 'images/perfil/foto-padrao.png' %}" class="img-thumbnail border rounded" width="280" alt="">
+            {% endif %}
+              
+           
+        </div> 
+<div class="container mt-3">
+    <div class="d-flex flex-wrap gap-5 justify-content-center align-items-center">
+        <div class="d-flex flex-column"> 
+        <button class="btn btn-warning" onclick="location.href='{% url 'editar_perfil' user.username %}'">
+            Editar Perfil
+        </button>
+        <div class="perfil-info mt-3"> 
+            <p><strong>Data Criação:</strong> {{perfil.user.date_joined|date:'d/m/Y'}}</p>
+            <p><strong>Ocupação:</strong> {{perfil.ocupacao}}</p>
+            <p><strong>Descrição:</strong> {{perfil.descricao}}</p>
+            <p><strong>Telefone:</strong> {{perfil.telefone}}</p>
+            <p><strong>Cidade:</strong> {{perfil.cidade}}</p>
+            <p><strong>País:</strong> {{perfil.estado}}</p>   
+            
+        </div>
+    </div> 
+    <hr>
+</div>
+{% endblock %}
+</body>
+</html>

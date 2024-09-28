@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="text-primary mb-4">Editar Perfil</h2>
+<form method="post" class="border p-4 bg-white rounded shadow-sm">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button button type="submit" class="btn btn-primary mt-3">Salvar</button>
+</form>
+{% endblock %}

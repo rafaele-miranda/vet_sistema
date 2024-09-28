@@ -25,6 +25,10 @@
             </ul>
         </div>
             {% if user.is_authenticated %}
+            <span class="p-2">
+                <button type="submit" class="btn btn-primary mx-2" onclick="location.href='{% url 'perfil'  %}'">Perfil</button>
+                
+            </span>
             <form method="post" action="{% url 'logout' %}" >
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger">Sair</button>
