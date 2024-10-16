@@ -24,7 +24,6 @@ def read(request):
     dic['dados_animal'] = DadosAnimal.objects.all()
     dic['dados_medicamento'] = Medicamento.objects.all()
     dic['dados_procedimento'] = Procedimento.objects.all()
-    dic['animais'] = DadosAnimal.objects.all()
     return render(request, 'registration/read.html', dic)
 
 @login_required
