@@ -3,6 +3,8 @@ from django.views import generic
 from django.urls import reverse_lazy
 from .models import DadosAnimal, Medicamento, Procedimento
 from .forms import CustomUserCreationForm, DadosAnimalForm, MedicamentoForm, ProcedimentoForm
+from pyexpat.errors import messages
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 
@@ -29,9 +31,11 @@ def read(request):
 @login_required
 def cadastro_animal(request):
     dic = {}
+    message = "Paciente adicionado com sucesso!"
     form = DadosAnimalForm(request.POST or None)
     if form.is_valid():
         form.save()
+        messages.success(request, message)
         return redirect('read')
     
     dic['form'] = form
@@ -58,9 +62,11 @@ def delete(request, pk):
 @login_required
 def cadastro_medicamento(request):
     dic = {}
+    message = "Medicamento adicionado com sucesso!"
     form = MedicamentoForm(request.POST or None)
     if form.is_valid():
         form.save()
+        messages.success(request, message)
         return redirect('read')
     dic['form'] = form
     return render(request, 'registration/form_medicamento.html', dic)
@@ -85,9 +91,11 @@ def deleteMedicamento(request, pk):
 @login_required
 def cadastro_procedimento(request):
     dic = {}
+    message = "Procedimento adicionado com sucesso!"
     form = ProcedimentoForm(request.POST or None)
     if form.is_valid():
         form.save()
+        messages.success(request, message)
         return redirect('read')
     dic['form'] = form
     return render(request, 'registration/form_procedimento.html', dic)
