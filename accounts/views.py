@@ -55,8 +55,10 @@ def update(request, pk):
     return render(request, 'registration/form.html', dic)
 
 def delete(request, pk):
+    message = "Paciente removido com sucesso!"
     animal = DadosAnimal.objects.get(pk=pk)
     animal.delete()
+    messages.warning(request, message)
     return redirect('read')
 
 @login_required
@@ -84,8 +86,10 @@ def update_medicamento(request, pk):
     return render(request, 'registration/form_medicamento.html', dic)
         
 def deleteMedicamento(request, pk):
+    message = "Medicamento removido com sucesso!"
     medicamento = Medicamento.objects.get(pk=pk)
     medicamento.delete()
+    messages.warning(request, message)
     return redirect('read')
 
 @login_required
@@ -114,8 +118,10 @@ def update_procedimento(request, pk):
     return render(request, 'registration/form_procedimento.html', dic)
 
 def deleteProcedimento(request, pk):
+    message = "Procedimento removido com sucesso!"
     procedimento = Procedimento.objects.get(pk=pk)
     procedimento.delete()
+    messages.warning(request, message)
     return redirect('read')
 
 def animal_relatorio(request):
