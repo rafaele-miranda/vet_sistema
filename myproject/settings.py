@@ -143,3 +143,5 @@ STATIC_ROOT = os.path.join(BASE_DIR,'static')
 STATIC_URL = '/static/'
 
 MESSAGES_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+API_KEY = "live_vtZK9PYze668BL7pqO2g8VzMKftSOsmo8mTCThlbuGFO2WRG6UFbxbegMStkXrTl"

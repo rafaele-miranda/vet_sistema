@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informações da Raça</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h1 class="text-center">Informações sobre Raças de Cães</h1>
+
+        <form method="get" class="my-4">
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    name="raca_name" 
+                    class="form-control" 
+                    placeholder="Digite o nome da raça" 
+                    value="{{ request.GET.raca_name }}">
+                <button class="btn btn-primary" type="submit">Buscar</button>
+            </div>
+        </form>
+
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% elif raca_info %}
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">{{ raca_info.name }}</h2>
+                    <p><strong>Temperamento:</strong> {{ raca_info.temperament }}</p>
+                    <p><strong>Peso:</strong> {{ raca_info.weight.metric }} kg</p>
+                    <p><strong>Altura:</strong> {{ raca_info.height.metric }} cm</p>
+                    <p><strong>Expectativa de Vida:</strong> {{ raca_info.life_span }}</p>
+                                           
+                </div>
+            </div>
+        {% else %}
+            <p class="text-muted">Digite o nome de uma raça para obter informações.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

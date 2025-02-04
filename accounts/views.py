@@ -6,6 +6,7 @@ from .forms import CustomUserCreationForm, DadosAnimalForm, MedicamentoForm, Pro
 from pyexpat.errors import messages
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+import requests
 
 
 class SignUpView(generic.CreateView):
@@ -143,3 +144,25 @@ def animal_relatorio(request):
         
 def timeout_view(request):
     return render(request, 'timeout.html')
+
+def api_view(request):
+    raca_name = request.GET.get("raca_name", "") 
+    raca_info = None
+    error = None
+
+    if raca_name:
+        api_key = "live_vtZK9PYze668BL7pqO2g8VzMKftSOsmo8mTCThlbuGFO2WRG6UFbxbegMStkXrTl"
+        url = f"https://api.thedogapi.com/v1/breeds/search?q={raca_name}"
+        headers = {"x-api-key": api_key}
+        response = requests.get(url, headers=headers)
+        
+        if response.status_code == 200:
+            data = response.json()
+            if data:
+                raca_info = data[0]  
+            else:
+                error = "Raça não encontrada."
+        else:
+            error = f"Erro ao acessar a API. Código: {response.status_code}"
+
+    return render(request, "api.html", {"raca_info": raca_info, "error": error})
