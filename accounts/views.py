@@ -2,9 +2,11 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.views import generic
 from django.urls import reverse_lazy
 from django.conf import settings
+from django.conf import settings
 from .models import DadosAnimal, Medicamento, Procedimento
 from .forms import CustomUserCreationForm, DadosAnimalForm, MedicamentoForm, ProcedimentoForm
 from pyexpat.errors import messages
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import requests
 
