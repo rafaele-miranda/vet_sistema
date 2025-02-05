@@ -8,3 +8,5 @@
 
 # SQLite
 db.sqlite3
+
+.env

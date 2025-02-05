@@ -1,10 +1,10 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views import generic
 from django.urls import reverse_lazy
+from django.conf import settings
 from .models import DadosAnimal, Medicamento, Procedimento
 from .forms import CustomUserCreationForm, DadosAnimalForm, MedicamentoForm, ProcedimentoForm
 from pyexpat.errors import messages
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import requests
 
@@ -151,7 +151,7 @@ def api_view(request):
     error = None
 
     if raca_name:
-        api_key = "live_vtZK9PYze668BL7pqO2g8VzMKftSOsmo8mTCThlbuGFO2WRG6UFbxbegMStkXrTl"
+        api_key = settings.API_KEY 
         url = f"https://api.thedogapi.com/v1/breeds/search?q={raca_name}"
         headers = {"x-api-key": api_key}
         response = requests.get(url, headers=headers)
