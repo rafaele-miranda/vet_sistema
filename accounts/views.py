@@ -9,6 +9,8 @@ from pyexpat.errors import messages
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import requests
+from django.shortcuts import render
+
 
 
 class SignUpView(generic.CreateView):
@@ -18,7 +20,25 @@ class SignUpView(generic.CreateView):
     
 @login_required
 def dashboard(request):
-    return render(request, 'registration/dashboard.html')
+    total_animais = DadosAnimal.objects.count()
+    total_medicamentos = Medicamento.objects.count()
+    total_procedimentos = Procedimento.objects.count()
+    
+    # Calcula o número de animais por status de saúde
+    animais_saudaveis = DadosAnimal.objects.filter(status_saude='saudavel').count()
+    animais_em_tratamento = DadosAnimal.objects.filter(status_saude='em_tratamento').count()
+    animais_condicao_cronica = DadosAnimal.objects.filter(status_saude='condicao_cronica').count()
+    
+    context = {
+        'total_animais': total_animais,
+        'total_medicamentos': total_medicamentos,
+        'total_procedimentos': total_procedimentos,
+        'animais_saudaveis': animais_saudaveis,
+        'animais_em_tratamento': animais_em_tratamento,
+        'animais_condicao_cronica': animais_condicao_cronica,
+    }
+    
+    return render(request, 'registration/dashboard.html', context)
 
 def home(request):
     return render(request, 'registration/home.html')

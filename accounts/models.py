@@ -21,6 +21,12 @@ class DadosAnimal(models.Model):
         ('n', 'NÃO'),
     ]
     
+    status_saude = [
+        ('saudavel', 'Saudável'),
+        ('em_tratamento', 'Em Tratamento'),
+        ('condicao_cronica', 'Condição Crônica'),
+    ]
+    
     nome = models.CharField(max_length=100)
     tipo_animal = models.CharField(max_length=100)
     raca = models.CharField(max_length=100)
@@ -33,9 +39,12 @@ class DadosAnimal(models.Model):
     tutor = models.CharField(max_length=100)
     telefone = models.CharField( max_length=15, validators=[RegexValidator(regex=r'^\+?1?\d{9,15}$')])
     endereco = models.CharField(max_length=100)
+    status_saude = models.CharField(max_length=100, choices=status_saude, default='saudavel') 
+
     
     def __str__(self):
         return self.nome
+
 
 
 class Medicamento(models.Model):
@@ -44,6 +53,7 @@ class Medicamento(models.Model):
   dosagem = models.CharField(max_length=100)
   duracao = models.CharField(max_length=100, verbose_name='Duração')
   observacoes = models.CharField(max_length=100, verbose_name='Observações')
+
   
   animal = models.ForeignKey(DadosAnimal, on_delete=models.CASCADE, related_name='medicamentos', default='1', null=True, blank=True)
   

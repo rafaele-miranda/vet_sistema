@@ -19,6 +19,7 @@ urlpatterns = [
     path('relatorio/', views.animal_relatorio, name='relatorio'),
     path('timeout/',  views.timeout_view, name='timeout'),
     path('api/', views.api_view, name='api'),
+    
 
 
 

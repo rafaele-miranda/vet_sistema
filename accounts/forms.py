@@ -24,3 +24,4 @@ class ProcedimentoForm(ModelForm):
     class Meta:
         model = Procedimento
         fields = '__all__'
+        

@@ -1,19 +1,112 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-{% extends 'base.html' %}
-{% block content %}
+    {% extends 'base.html' %}
+    {% block content %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        
+        .card-custom {
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        
+        .bg-category-1 {
+            background-color: #e3f2fd; 
+        }
+
+        .bg-category-2 {
+            background-color: #f0f4c3; 
+        }
+
+        .bg-category-3 {
+            background-color: #ffccbc; 
+        }
+
+        
+        .card-title {
+            margin-bottom: 0; 
+        }
+
+        .card-body {
+            padding: 15px; 
+        }
+    </style>
 </head>
-<!-- Bootstrap CSS -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <body>
-    <h1>Bem-vindo ao seu painel, {{ user.username }}!</h1>
-    <p>Esta é a sua página de dashboard.</p>
-    <a href="{% url 'read' %}" class="btn btn-primary mb-2">Verificar pacientes</a>
-    
+    <div class="container">
+        <h1 class="mt-4">Bem-vindo ao seu painel, {{ user.username }}!</h1>
+        <p>Esta é a sua página de dashboard.</p>
+
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card card-custom bg-category-1">
+                    <div class="card-body">
+                        <h5 class="card-title">Total de Animais Cadastrados</h5>
+                        <p class="card-text">{{ total_animais }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-custom bg-category-1">
+                    <div class="card-body">
+                        <h5 class="card-title">Total de Medicamentos Cadastrados</h5>
+                        <p class="card-text">{{ total_medicamentos }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-custom bg-category-1">
+                    <div class="card-body">
+                        <h5 class="card-title">Total de Procedimentos Realizados</h5>
+                        <p class="card-text">{{ total_procedimentos }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card card-custom bg-category-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Animais Saudáveis</h5>
+                        <p class="card-text">{{ animais_saudaveis }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-custom bg-category-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Animais em Tratamento</h5>
+                        <p class="card-text">{{ animais_em_tratamento }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-custom bg-category-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Animais com Condição Crônica</h5>
+                        <p class="card-text">{{ animais_condicao_cronica }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="text-center mt-4">
+            <a href="{% url 'read' %}" class="btn btn-primary">Verificar pacientes</a>
+        </div>
+    </div>
+
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
