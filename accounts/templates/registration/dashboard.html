@@ -9,7 +9,6 @@
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        
         .card-custom {
             margin-bottom: 20px;
             border: none;
@@ -17,7 +16,6 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        
         .bg-category-1 {
             background-color: #e3f2fd; 
         }
@@ -30,13 +28,18 @@
             background-color: #ffccbc; 
         }
 
-        
         .card-title {
             margin-bottom: 0; 
         }
 
         .card-body {
             padding: 15px; 
+        }
+
+        
+        .bg-category-3 .list-group-item {
+            background-color: #ffccbc; 
+            border: none; 
         }
     </style>
 </head>
@@ -101,9 +104,54 @@
             </div>
         </div>
 
+        
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card card-custom bg-category-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Medicamentos Mais Utilizados</h5>
+                        <ul class="list-group">
+                            {% for medicamento in medicamentos_mais_utilizados %}
+                                <li class="list-group-item">
+                                    {{ medicamento.estoque_medicamento__nome }} - Utilizado por {{ medicamento.total_uso }} animais
+                                </li>
+                            {% empty %}
+                                <li class="list-group-item">Nenhum medicamento utilizado recentemente.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <div class="text-center mt-4">
-            <a href="{% url 'read' %}" class="btn btn-primary">Verificar pacientes</a>
+    
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card card-custom bg-category-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Medicamentos em Falta</h5>
+                        <ul class="list-group">
+                            {% for medicamento in medicamentos_em_falta %}
+                                <li class="list-group-item">
+                                    {{ medicamento.nome }} - Estoque: {{ medicamento.quantidade }} 
+                                </li>
+                            {% empty %}
+                                <li class="list-group-item">Nenhum medicamento em falta.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="row mt-4">
+            <div class="col-md-6 text-center">
+                <a href="{% url 'read' %}" class="btn btn-primary">Verificar pacientes</a>
+            </div>
+            <div class="col-md-6 text-center">
+                <a href="{% url 'listar_estoque' %}" class="btn btn-primary">Verificar estoque</a>
+            </div>
         </div>
     </div>
 

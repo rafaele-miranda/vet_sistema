@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
-from .models import CustomUser, DadosAnimal, Medicamento, Procedimento
+from .models import CustomUser, DadosAnimal, Medicamento, Procedimento, EstoqueMedicamento
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
@@ -25,3 +25,7 @@ class ProcedimentoForm(ModelForm):
         model = Procedimento
         fields = '__all__'
         
+class EstoqueMedicamentoForm(forms.ModelForm):
+    class Meta:
+        model = EstoqueMedicamento
+        fields = ['nome', 'dosagem', 'descricao', 'quantidade', 'estoque_minimo']

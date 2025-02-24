@@ -4,6 +4,7 @@ from django.core.validators import RegexValidator
 
 
 
+
 class CustomUser(AbstractUser):
   groups = models.ManyToManyField(Group, related_name='customuser_set', blank=True)
   user_permissions = models.ManyToManyField(Permission, related_name='customuser_set', blank=True)
@@ -45,20 +46,30 @@ class DadosAnimal(models.Model):
     def __str__(self):
         return self.nome
 
+class EstoqueMedicamento(models.Model):
+    nome = models.CharField(max_length=100, verbose_name='Nome do Medicamento')
+    dosagem = models.CharField(max_length=100, verbose_name='Dosagem')
+    descricao = models.TextField(verbose_name='Descrição', blank=True, null=True)
+    quantidade = models.PositiveIntegerField(default=0, verbose_name='Quantidade em Estoque')
+    estoque_minimo = models.PositiveIntegerField(default=10, verbose_name='Estoque Mínimo')
 
+    def __str__(self):
+        return f"{self.nome} ({self.dosagem})"
+
+    def em_falta(self):
+        return self.quantidade <= self.estoque_minimo
 
 class Medicamento(models.Model):
-  medicamento = models.CharField(max_length=100)
-  frequecia = models.CharField(max_length=100, verbose_name='Frequência')
-  dosagem = models.CharField(max_length=100)
-  duracao = models.CharField(max_length=100, verbose_name='Duração')
-  observacoes = models.CharField(max_length=100, verbose_name='Observações')
+    estoque_medicamento = models.ForeignKey('EstoqueMedicamento', on_delete=models.CASCADE, related_name='medicamentos_estoque', verbose_name='Medicamento em Estoque')
+    frequencia = models.CharField(max_length=100, verbose_name='Frequência')
+    dosagem = models.CharField(max_length=100)
+    duracao = models.CharField(max_length=100, verbose_name='Duração')
+    observacoes = models.CharField(max_length=100, verbose_name='Observações')
 
-  
-  animal = models.ForeignKey(DadosAnimal, on_delete=models.CASCADE, related_name='medicamentos', default='1', null=True, blank=True)
-  
-  def __str__(self):
-      return self.medicamento
+    animal = models.ForeignKey('DadosAnimal', on_delete=models.CASCADE, related_name='medicamentos', default='1', null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.estoque_medicamento.nome} - {self.frequencia}"
     
 
 class Procedimento(models.Model):
@@ -80,3 +91,9 @@ class Procedimento(models.Model):
   
   def __str__(self):
     return self.tipo_procedimento
+  
+  
+
+
+  
+  

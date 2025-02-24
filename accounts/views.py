@@ -3,32 +3,34 @@ from django.views import generic
 from django.urls import reverse_lazy
 from django.conf import settings
 from django.conf import settings
-from .models import DadosAnimal, Medicamento, Procedimento
-from .forms import CustomUserCreationForm, DadosAnimalForm, MedicamentoForm, ProcedimentoForm
+from .models import DadosAnimal, Medicamento, Procedimento, EstoqueMedicamento
+from .forms import CustomUserCreationForm, DadosAnimalForm, MedicamentoForm, ProcedimentoForm, EstoqueMedicamentoForm
 from pyexpat.errors import messages
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import requests
 from django.shortcuts import render
-
-
+from django.db.models import Count
 
 class SignUpView(generic.CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'registration/signup.html'
     
+
 @login_required
 def dashboard(request):
     total_animais = DadosAnimal.objects.count()
     total_medicamentos = Medicamento.objects.count()
     total_procedimentos = Procedimento.objects.count()
     
-    # Calcula o número de animais por status de saúde
     animais_saudaveis = DadosAnimal.objects.filter(status_saude='saudavel').count()
     animais_em_tratamento = DadosAnimal.objects.filter(status_saude='em_tratamento').count()
     animais_condicao_cronica = DadosAnimal.objects.filter(status_saude='condicao_cronica').count()
-    
+   
+    medicamentos_mais_utilizados = Medicamento.objects.values('estoque_medicamento__nome').annotate(total_uso=Count('animal')).order_by('-total_uso')[:3]  
+    medicamentos_em_falta = EstoqueMedicamento.objects.filter(quantidade__lte=10)  
+
     context = {
         'total_animais': total_animais,
         'total_medicamentos': total_medicamentos,
@@ -36,6 +38,8 @@ def dashboard(request):
         'animais_saudaveis': animais_saudaveis,
         'animais_em_tratamento': animais_em_tratamento,
         'animais_condicao_cronica': animais_condicao_cronica,
+        'medicamentos_mais_utilizados': medicamentos_mais_utilizados,  
+        'medicamentos_em_falta': medicamentos_em_falta,
     }
     
     return render(request, 'registration/dashboard.html', context)
@@ -64,6 +68,8 @@ def cadastro_animal(request):
     dic['form'] = form
     return render(request, 'registration/form.html', dic)
 
+
+@login_required
 def update(request, pk):
     animal = DadosAnimal.objects.get(pk=pk)
     form = DadosAnimalForm(request.POST or None, instance=animal)
@@ -77,6 +83,8 @@ def update(request, pk):
     dic['animal'] = animal
     return render(request, 'registration/form.html', dic)
 
+
+@login_required
 def delete(request, pk):
     message = "Paciente removido com sucesso!"
     animal = DadosAnimal.objects.get(pk=pk)
@@ -96,6 +104,8 @@ def cadastro_medicamento(request):
     dic['form'] = form
     return render(request, 'registration/form_medicamento.html', dic)
 
+
+@login_required
 def update_medicamento(request, pk):
     animal = Medicamento.objects.get(pk=pk)
     form = MedicamentoForm(request.POST or None, instance=animal)
@@ -107,7 +117,9 @@ def update_medicamento(request, pk):
     dic['form'] = form
     dic['animal'] = animal
     return render(request, 'registration/form_medicamento.html', dic)
-        
+
+
+@login_required        
 def deleteMedicamento(request, pk):
     message = "Medicamento removido com sucesso!"
     medicamento = Medicamento.objects.get(pk=pk)
@@ -127,6 +139,8 @@ def cadastro_procedimento(request):
     dic['form'] = form
     return render(request, 'registration/form_procedimento.html', dic)
 
+
+@login_required
 def update_procedimento(request, pk):
     animal = Procedimento.objects.get(pk=pk)
     form = ProcedimentoForm(request.POST or None, instance=animal)
@@ -140,6 +154,7 @@ def update_procedimento(request, pk):
     dic['animal'] = animal
     return render(request, 'registration/form_procedimento.html', dic)
 
+@login_required
 def deleteProcedimento(request, pk):
     message = "Procedimento removido com sucesso!"
     procedimento = Procedimento.objects.get(pk=pk)
@@ -147,6 +162,8 @@ def deleteProcedimento(request, pk):
     messages.warning(request, message)
     return redirect('read')
 
+
+@login_required
 def animal_relatorio(request):
     animal_id = request.GET.get('animal_id') 
     if animal_id:
@@ -188,3 +205,34 @@ def api_view(request):
             error = f"Erro ao acessar a API. Código: {response.status_code}"
 
     return render(request, "api.html", {"raca_info": raca_info, "error": error})
+
+@login_required
+def adicionar_estoque(request):
+    if request.method == 'POST':
+        form = EstoqueMedicamentoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_estoque')
+    else:
+        form = EstoqueMedicamentoForm()
+    
+    context = {'form': form}
+    return render(request, 'adicionar_estoque.html', context)
+
+
+@login_required
+def listar_estoque(request):
+    estoques = EstoqueMedicamento.objects.all()  
+    context = {'estoques': estoques}
+    return render(request, 'listar_estoque.html', context)
+
+
+@login_required
+def excluir_estoque(request, estoque_id):
+    estoque = get_object_or_404(EstoqueMedicamento, id=estoque_id)
+    estoque.delete()
+    messages.success(request, 'Medicamento excluído com sucesso!')
+    return redirect('listar_estoque')
+
+
+

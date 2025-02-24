@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Lista de Estoque de Medicamentos</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Medicamento</th>
+            <th>Dosagem</th>
+            <th>Quantidade em Estoque</th>
+            <th>Estoque Mínimo</th>
+            <th>Status</th>
+            <th>Remover</th> 
+        </tr>
+    </thead>
+    <tbody>
+        {% for estoque in estoques %}
+        <tr>
+            <td>{{ estoque.nome }}</td>
+            <td>{{ estoque.dosagem }}</td>
+            <td>{{ estoque.quantidade }}</td>
+            <td>{{ estoque.estoque_minimo }}</td>
+            <td>
+                {% if estoque.em_falta %}
+                    <span class="badge badge-danger">Em Falta</span>
+                {% else %}
+                    <span class="badge badge-success">Disponível</span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'excluir_estoque' estoque.id %}" class="text-danger" onclick="return confirm('Tem certeza que deseja excluir este medicamento?');">
+                    <i class="fas fa-trash-alt"></i> 
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6" class="text-center">Nenhum medicamento em estoque.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'adicionar_estoque' %}" class="btn btn-primary">Adicionar Medicamento</a>
+<a href="{% url 'dashboard' %}" class="btn btn-secondary">Voltar ao Dashboard</a>
+{% endblock %}
