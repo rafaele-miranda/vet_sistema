@@ -69,7 +69,7 @@ O comando abaixo detecta as mudanças feitas em models.py (adicionar um novo cam
 python manage.py makemigrations 
 ```
 
-> **Nota**: Você deve ter lido acima que não se deve alterar uma migration que já foi mesclada na branch `main` no remote.
+> **Nota**: Você deve ter lido abaixo que não se deve alterar uma migration que já foi mesclada na branch `main` no remote.
 Todavia você pode e deve apagar e gerar uma nova migration que você está mexendo localmente. Apenas quando a sua migration
 for mesclada na `main` é que ela não poderá ser modificada.
 
