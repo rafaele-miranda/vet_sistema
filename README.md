@@ -57,8 +57,21 @@ De dentro do Virtual Environment execute o comando abaixo para instalar as depen
 python -m pip install -r requirements.txt
 ```
 
-
 O arquivo `requirements.txt` contêm as dependências do projeto.
+
+### Criando modelos e migrations
+Ao final de suas edições dos [models](accounts/models.py) você deve criar uma nova migração para atualizar os esquemas do banco de dados.
+Saiba mais [aqui](https://docs.djangoproject.com/pt-br/5.1/intro/tutorial02/#creating-models).
+
+O comando abaixo detecta as mudanças feitas em models.py (adicionar um novo campo, mudar o tipo de um campo, etc.) e cria arquivos de migração que descrevem essas mudanças. Para criar uma nova migration basta executar o comando abaixo. Um novo arquivo de migration será criado dentro do diretório `accounts/migrations`.
+
+```shell
+python manage.py makemigrations 
+```
+
+> **Nota**: Você deve ter lido acima que não se deve alterar uma migration que já foi mesclada na branch `main` no remote.
+Todavia você pode e deve apagar e gerar uma nova migration que você está mexendo localmente. Apenas quando a sua migration
+for mesclada na `main` é que ela não poderá ser modificada.
 
 ### Executando as migrations
 Toda vez que uma nova migração for adicionada por você ou outra pessoa o comando abaixo deverá ser executado novamente.
@@ -67,7 +80,7 @@ Você também deve executá-lo na primeira vez durante o setup do projeto.
 > **Aviso**: NUNCA modifique um arquivo de migração que já foi mesclado na branch `main` no remote, pois
 são altas as chances de quebrar o esquema da database. Para alterar uma tabela ou campo crie um novo arquivo de migração.
 
-De dentro do Virtual Environment rode as migrações para criar as tabelas do banco de dados:
+O comando abaixo pega os arquivos de migração criados pelo makemigrations e aplica as mudanças correspondentes ao banco de dados. De dentro do Virtual Environment rode as migrações para criar as tabelas do banco de dados:
 
 ```shell
 python manage.py migrate
@@ -79,21 +92,6 @@ De dentro do Virtual Environment excute comando abaixo para rodar o servidor Dja
 ```shell
 python manage.py runserver
 ```
-
-### Criando modelos e migrations
-Ao final de suas edições dos [models](accounts/models.py) você deve criar uma nova migração para atualizar os esquemas do banco de dados.
-Saiba mais [aqui](https://docs.djangoproject.com/pt-br/5.1/intro/tutorial02/#creating-models).
-
-Para criar uma nova migration basta executar o comando abaixo. Um novo arquivo de migration será criado dentro do diretório
-`accounts/migrations`
-
-```shell
-python manage.py makemigrations accounts
-```
-
-> **Nota**: Você deve ter lido acima que não se deve alterar uma migration que já foi mesclada na branch `main` no remote.
-Todavia você pode e deve apagar e gerar uma nova migration que você está mexendo localmente. Apenas quando a sua migration
-for mesclada na `main` é que ela não poderá ser modificada.
 
 ### Criando um usuário administrador
 Gerar um site de administração para sua equipe ou clientes para adicionar, alterar, e deletar conteúdo é uma tarefa tediosa que não requer muita criatividade. Por essa razão, o Django automatiza totalmente a criação da interface de administração para os modelos.
