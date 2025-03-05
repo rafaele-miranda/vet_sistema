@@ -21,16 +21,16 @@ class SignUpView(generic.CreateView):
 @login_required
 def dashboard(request):
     total_animais = DadosAnimal.objects.count()
-    total_medicamentos = Medicamento.objects.count()
+    total_medicamentos = EstoqueMedicamento.objects.count()  
     total_procedimentos = Procedimento.objects.count()
     
     animais_saudaveis = DadosAnimal.objects.filter(status_saude='saudavel').count()
     animais_em_tratamento = DadosAnimal.objects.filter(status_saude='em_tratamento').count()
     animais_condicao_cronica = DadosAnimal.objects.filter(status_saude='condicao_cronica').count()
-   
-    medicamentos_mais_utilizados = Medicamento.objects.values('estoque_medicamento__nome').annotate(total_uso=Count('animal')).order_by('-total_uso')[:3]  
+    
+    medicamentos_mais_utilizados = Medicamento.objects.values('estoque_medicamento__nome').annotate(total_uso=Count('animal')).order_by('-total_uso')[:3]
     medicamentos_em_falta = EstoqueMedicamento.objects.filter(quantidade__lte=10)  
-
+   
     context = {
         'total_animais': total_animais,
         'total_medicamentos': total_medicamentos,
