@@ -7,6 +7,7 @@ from django.contrib.auth.models import Group
 
 class Perfil(models.Model):   
     user = models.OneToOneField(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name='perfil') 
+    crmv = models.CharField(max_length=100, blank=True, verbose_name="CRMV")
     foto = models.ImageField(upload_to='perfil/foto/', blank=True)  
     ocupacao = models.CharField(max_length=120, blank=True, verbose_name='Ocupação')
     descricao = models.TextField(blank=True, verbose_name='Descrição')  

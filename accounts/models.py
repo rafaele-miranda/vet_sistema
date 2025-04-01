@@ -17,6 +17,11 @@ class DadosAnimal(models.Model):
     ('f', 'F'),
     ]
     
+    castrado = [
+        ('s', 'SIM'),
+        ('n', 'NÃO'),
+    ]
+    
     chip = [
         ('s', 'SIM'),
         ('n', 'NÃO'),
@@ -36,6 +41,7 @@ class DadosAnimal(models.Model):
     peso = models.DecimalField(max_digits=5, decimal_places=2)
     cor = models.CharField(max_length=100)
     microchip = models.CharField(max_length=100, choices=chip, default='1')
+    castrado = models.CharField(max_length=100, choices=castrado, default=1)
     data_entrada = models.DateTimeField()
     tutor = models.CharField(max_length=100)
     telefone = models.CharField( max_length=15, validators=[RegexValidator(regex=r'^\+?1?\d{9,15}$')])
@@ -65,6 +71,8 @@ class Medicamento(models.Model):
     dosagem = models.CharField(max_length=100)
     duracao = models.CharField(max_length=100, verbose_name='Duração')
     observacoes = models.CharField(max_length=100, verbose_name='Observações')
+    via_administracao = models.CharField(max_length=100, verbose_name="Via de Administração", default="VO")
+    data_hora_administracao = models.DateTimeField(verbose_name="Data/Hora de Administração",null=True, blank=True)
 
     animal = models.ForeignKey('DadosAnimal', on_delete=models.CASCADE, related_name='medicamentos', default='1', null=True, blank=True)
 
