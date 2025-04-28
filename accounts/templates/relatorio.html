@@ -3,95 +3,226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório</title>
+    <title>Relatório de {{ animal.nome }}</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                padding: 10px;
+                margin: 0;
+                background-color: white;
+                font-size: 12px;
+            }
+            .container {
+                width: 100%;
+                max-width: 100%;
+                padding: 0;
+            }
+            h1 {
+                font-size: 18px;
+                margin-top: 5px;
+            }
+            h2 {
+                font-size: 16px;
+                margin-top: 15px;
+            }
+            table {
+                font-size: 10px;
+                page-break-inside: auto;
+            }
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+            .table td, .table th {
+                padding: 4px;
+            }
+        }
+        .header-report {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .clinic-info {
+            text-align: right;
+            font-size: 14px;
+        }
+    </style>
 </head>
-<body class="container mt-5 bg-light">
-    <h1 class="text-primary">Relatório de {{ animal.nome }}</h1>
+<body class="container mt-3">
+    <!-- Cabeçalho do relatório -->
+    <div class="header-report">
+        <div>
+            <h1 class="text-primary mb-1">Relatório de {{ animal.nome }}</h1>
+            <p class="mb-1"><strong>Data do Relatório:</strong> {% now "d/m/Y" %}</p>
+        </div>
+        <div class="clinic-info">
+            <p class="mb-1"><strong>Clínica Veterinária</strong></p>
+            <p class="mb-1">Endereço: Rua Exemplo, 123</p>
+            <p class="mb-1">Telefone: (11) 9999-9999</p>
+        </div>
+    </div>
 
-    <h2 class="text-info mt-5">Dados do Animal</h2>
-    <table class="table table-striped">
-        <thead>
+    <!-- Botão de exportação -->
+    <div class="no-print mb-4 text-center">
+        <button onclick="exportToPDF()" class="btn btn-primary">
+            <i class="fas fa-file-pdf"> Exportar para PDF</i> 
+        </button>
+        <a href="{% url 'api_relatorio_pdf' animal.id %}" class="btn btn-secondary ml-2" download>
+            <i class="fas fa-download">
+                Baixar PDF Direto
+            </i> 
+        </a>
+    </div>
+
+    <!-- Seção 1: Dados do Animal -->
+    <h2 class="text-info mt-4">Dados do Animal</h2>
+    <table class="table table-bordered table-sm">
+        <thead class="thead-light">
             <tr>
                 <th scope="col">Nome</th>
                 <th scope="col">Tipo</th>
                 <th scope="col">Raça</th>
                 <th scope="col">Sexo</th>
+                <th scope="col">Idade</th>
                 <th scope="col">Peso (Kg)</th>
                 <th scope="col">Microchip</th>
-                <th scope="col">Tutor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ animal.nome }}</td>
+                <td>{{ animal.tipo_animal }}</td>
+                <td>{{ animal.raca }}</td>
+                <td>{{ animal.get_sexo_display }}</td>
+                <td>{{ animal.idade }} anos</td>
+                <td>{{ animal.peso }}</td>
+                <td>{{ animal.get_microchip_display }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Seção 2: Dados do Tutor -->
+    <h2 class="text-info mt-4">Dados do Tutor</h2>
+    <table class="table table-bordered table-sm">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Nome</th>
                 <th scope="col">Telefone</th>
+                <th scope="col">E-mail</th>
                 <th scope="col">Endereço</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td scope="row">{{ animal.nome }}</td>
-                <td>{{ animal.tipo_animal }}</td>
-                <td>{{ animal.raca }}</td>
-                <td>{{ animal.get_sexo_display }}</td>
-                <td>{{ animal.peso }}</td>
-                <td>{{ animal.get_microchip_display }}</td>
                 <td>{{ animal.tutor }}</td>
                 <td>{{ animal.telefone }}</td>
+                <td>{{ animal.email|default:"-" }}</td>
                 <td>{{ animal.endereco }}</td>
             </tr>
         </tbody>
     </table>
 
-    <h2 class="text-info mt-5">Medicamentos</h2>
+    <!-- Seção 3: Histórico de Medicamentos -->
+    <h2 class="text-info mt-4">Histórico de Medicamentos</h2>
     {% if medicamentos.count == 0 %}
-    <h3>Sem medicamentos registrados.</h3>
+    <div class="alert alert-warning">Nenhum medicamento registrado.</div>
     {% else %}
-    <table class="table table-striped">
-        <thead>
+    <table class="table table-bordered table-sm">
+        <thead class="thead-light">
             <tr>
-                <th scope="col">Nome do medicamento</th>
+                <th scope="col">Medicamento</th>
                 <th scope="col">Dosagem</th>
                 <th scope="col">Frequência</th>
                 <th scope="col">Duração</th>
+                <th scope="col">Data Início</th>
+                <th scope="col">Data Término</th>
+                <th scope="col">Observações</th>
             </tr>
         </thead>
         <tbody>
             {% for medicamento in medicamentos %}
-                <tr>
-                    <th scope="row">{{ medicamento.medicamento }}</th>
-                    <td>{{ medicamento.dosagem }}</td>
-                    <td>{{ medicamento.frequecia }}</td>
-                    <td>{{ medicamento.duracao }}</td>
-                </tr>
-            {% endfor %}       
+            <tr>
+                <td>{{ medicamento.medicamento }}</td>
+                <td>{{ medicamento.dosagem }}</td>
+                <td>{{ medicamento.frequecia }}</td>
+                <td>{{ medicamento.duracao }}</td>
+                <td>{{ medicamento.data_inicio|date:"d/m/Y" }}</td>
+                <td>{{ medicamento.data_termino|date:"d/m/Y"|default:"-" }}</td>
+                <td>{{ medicamento.observacoes|default:"-" }}</td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
     {% endif %}
 
-    <h2 class="text-info mt-5">Procedimentos</h2>
+    <!-- Seção 4: Histórico de Procedimentos -->
+    <h2 class="text-info mt-4">Histórico de Procedimentos</h2>
     {% if procedimentos.count == 0 %}
-    <h3>Sem procedimentos registrados.</h3>
+    <div class="alert alert-warning">Nenhum procedimento registrado.</div>
     {% else %}
-    <table class="table table-striped">
-        <thead>
+    <table class="table table-bordered table-sm">
+        <thead class="thead-light">
             <tr>
-                <th scope="col">Nome do procedimento</th>
+                <th scope="col">Procedimento</th>
                 <th scope="col">Data</th>
-                <th scope="col">Veterinário Responsável</th>
-                <th scope="col">Observação</th>
+                <th scope="col">Veterinário</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Observações</th>
             </tr>
         </thead>
         <tbody>
             {% for procedimento in procedimentos %}
-                <tr>
-                    <th scope="row">{{ procedimento.get_tipo_procedimento_display }}</th>
-                    <td>{{ procedimento.data }}</td>
-                    <td>{{ procedimento.veterinario_responsavel }}</td>
-                    <td>{{ procedimento.observacao }}</td>
-                </tr>
-            {% endfor %}       
+            <tr>
+                <td>{{ procedimento.get_tipo_procedimento_display }}</td>
+                <td>{{ procedimento.data|date:"d/m/Y" }}</td>
+                <td>{{ procedimento.veterinario_responsavel }}</td>
+                <td>{{ procedimento.descricao|default:"-" }}</td>
+                <td>{{ procedimento.observacao|default:"-" }}</td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
     {% endif %}
 
+    <!-- Rodapé do relatório -->
+    <div class="mt-4 text-center text-muted no-print">
+        <p>Relatório gerado em {% now "d/m/Y H:i" %} {% if request %}por {{ request.user.get_full_name|default:request.user.username }}{% endif %}</p>
+
+    </div>
+
+    <!-- JavaScript para exportação -->
+    <script>
+        function exportToPDF() {
+            fetch(`/api/relatorio/pdf/{{ animal.id }}/`)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `relatorio_{{ animal.nome|slugify }_${new Date().toISOString().slice(0,10)}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => {
+                    console.error('Erro ao exportar PDF:', error);
+                    alert('Ocorreu um erro ao gerar o PDF. Por favor, tente novamente.');
+                });
+        }
+    </script>
+
+    <!-- Ícones Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Scripts do Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

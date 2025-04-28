@@ -11,6 +11,13 @@ from django.contrib.auth.decorators import login_required
 import requests
 from django.shortcuts import render
 from django.db.models import Count
+from django.http import FileResponse, HttpResponse
+from django.template.loader import render_to_string
+from io import BytesIO
+from weasyprint import HTML
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
 class SignUpView(generic.CreateView):
     form_class = CustomUserCreationForm
@@ -163,7 +170,7 @@ def deleteProcedimento(request, pk):
     return redirect('read')
 
 
-@login_required
+'''@login_required
 def animal_relatorio(request):
     animal_id = request.GET.get('animal_id') 
     if animal_id:
@@ -179,7 +186,36 @@ def animal_relatorio(request):
 
         return render(request, 'relatorio.html', context)
     else:
-        return redirect('read')  
+        return redirect('read')'''  
+    
+class RelatorioPDFAPIView(APIView):
+    def get(self, request, animal_id):
+        try:
+            animal = get_object_or_404(DadosAnimal, id=animal_id)
+            html_string = render_to_string('relatorio.html', {
+                'request': request,
+                'animal': animal,
+                'medicamentos': animal.medicamentos.all(),
+                'procedimentos': animal.procedimentos.all()
+            })
+
+            # Configurações para o WeasyPrint
+            pdf = HTML(
+                string=html_string,
+                base_url=request.build_absolute_uri('/')
+            ).write_pdf()
+
+            response = HttpResponse(pdf, content_type='application/pdf')
+            response['Content-Disposition'] = f'attachment; filename="relatorio_{animal.nome}.pdf"'
+            return response
+
+        except Exception as e:
+            print(f"Erro na geração do PDF: {str(e)}")
+            return HttpResponse(
+                f"Erro ao gerar PDF: {str(e)}", 
+                status=500,
+                content_type='text/plain'
+            )
         
 def timeout_view(request):
     return render(request, 'timeout.html')
