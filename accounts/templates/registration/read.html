@@ -23,7 +23,7 @@
         <ul class="list-group mb-3">
             {% for medicamento in dados_medicamento %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <a href="{% url 'update_medicamento' medicamento.id %}">{{ medicamento.animal }}</a>
+                    <a href="{% url 'update_medicamento' medicamento.id %}">{{ medicamento.animal }} - {{ medicamento.estoque_medicamento }}</a>
                 </li>
             {% endfor %}
         </ul>
