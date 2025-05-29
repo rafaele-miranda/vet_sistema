@@ -151,12 +151,12 @@ def cadastro_procedimento(request):
 def update_procedimento(request, pk):
     animal = Procedimento.objects.get(pk=pk)
     form = ProcedimentoForm(request.POST or None, instance=animal)
-    dic = {}
     
     if form.is_valid():
         form.save()
         return redirect('read')
     
+    dic = {}
     dic['form'] = form
     dic['animal'] = animal
     return render(request, 'registration/form_procedimento.html', dic)
@@ -168,26 +168,7 @@ def deleteProcedimento(request, pk):
     procedimento.delete()
     messages.warning(request, message)
     return redirect('read')
-
-
-'''@login_required
-def animal_relatorio(request):
-    animal_id = request.GET.get('animal_id') 
-    if animal_id:
-        animal = get_object_or_404(DadosAnimal, id=animal_id)
-        medicamentos = animal.medicamentos.all()
-        procedimentos = animal.procedimentos.all()
-
-        context = {
-            'animal': animal,
-            'medicamentos': medicamentos,
-            'procedimentos': procedimentos,
-        }
-
-        return render(request, 'relatorio.html', context)
-    else:
-        return redirect('read')'''  
-    
+ 
 class RelatorioPDFAPIView(APIView):
     def get(self, request, animal_id):
         try:
