@@ -18,6 +18,10 @@ from weasyprint import HTML
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from accounts.utils import filtrar_modelo
+
+from accounts import models
+
 
 class SignUpView(generic.CreateView):
     form_class = CustomUserCreationForm
@@ -57,10 +61,32 @@ def home(request):
 @login_required
 def read(request):
     dic = {}
-    dic['dados_animal'] = DadosAnimal.objects.all()
-    dic['dados_medicamento'] = Medicamento.objects.all()
-    dic['dados_procedimento'] = Procedimento.objects.all()
+    nome_busca = request.GET.get("nome")
+
+    # Filtro para DadosAnimal (busca direta pelo nome)
+    dados_animal = models.DadosAnimal.objects.all()
+    if nome_busca:
+        dados_animal = dados_animal.filter(nome__icontains=nome_busca)
+
+    # Filtro para Medicamento (busca pelo nome do animal relacionado)
+    dados_medicamento = models.Medicamento.objects.all()
+    if nome_busca:
+        dados_medicamento = dados_medicamento.filter(animal__nome__icontains=nome_busca)
+
+    # Filtro para Procedimento (busca pelo nome do animal relacionado)
+    dados_procedimento = models.Procedimento.objects.all()
+    if nome_busca:
+        dados_procedimento = dados_procedimento.filter(animal__nome__icontains=nome_busca)
+
+    dic.update({
+        'dados_animal': dados_animal,
+        'dados_medicamento': dados_medicamento,
+        'dados_procedimento': dados_procedimento
+    })
+    
     return render(request, 'registration/read.html', dic)
+
+
 
 @login_required
 def cadastro_animal(request):
