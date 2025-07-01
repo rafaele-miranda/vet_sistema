@@ -27,7 +27,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="#">Sobre</a>
                 </li>
@@ -40,30 +40,22 @@
             </ul>
         </div>
             {% if user.is_authenticated %}
-            <ul class="navbar-nav">
-                <li class="nav-item">
+                <div class="d-flex"></div>
                     <form method="get" action="" class="d-flex">  
                         <input type="search" name="nome" class="form-control me-2" placeholder="Buscar por nome" aria-label="Search" value="{{ request.GET.nome }}">
                         <button class="btn btn-success" type="submit">Pesquisar</button>
                     </form>
-                </li>
-                <li class="nav-item">
                     <span class="p-2">
                         <button type="submit" class="btn btn-primary mx-2" onclick="location.href='{% url 'perfil' %}'">Perfil</button>
                     </span>
-                </li>
-                <li class="nav-item">
                     <form method="post" action="{% url 'logout' %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-danger">Sair</button>
                     </form>
-                </li>
-                {% else %}
-                <li class="nav-item">
+                </div>
+                {% else %}  
                     <button type="submit" class="btn btn-primary mx-2" onclick="location.href='{% url 'login' %}'">Entrar</button>
-                </li>
                 {% endif %}
-            </ul>
     </nav>
 
     
