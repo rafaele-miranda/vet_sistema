@@ -40,14 +40,11 @@
             </ul>
         </div>
             {% if user.is_authenticated %}
-                <div class="d-flex"></div>
-                    <form method="get" action="" class="d-flex">  
-                        <input type="search" name="nome" class="form-control me-2" placeholder="Buscar por nome" aria-label="Search" value="{{ request.GET.nome }}">
-                        <button class="btn btn-success" type="submit">Pesquisar</button>
-                    </form>
-                    <span class="p-2">
-                        <button type="submit" class="btn btn-primary mx-2" onclick="location.href='{% url 'perfil' %}'">Perfil</button>
-                    </span>
+                <div class="d-flex">
+                    {% block search_bar %}{% endblock %}
+                    <a href="{% url 'perfil' %}" class="btn btn-primary mx-2" style="height: 38px; line-height: 24px;">
+                        Perfil
+                    </a>
                     <form method="post" action="{% url 'logout' %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-danger">Sair</button>

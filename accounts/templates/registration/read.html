@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
+{% block search_bar %}
+    <form method="get" action="" class="d-flex " style="height: 38px;">
+        <input type="search" name="nome" class="form-control" placeholder="Buscar por nome">
+        <button class="btn btn-success ml-2" type="submit">Pesquisar</button>
+    </form>
+{% endblock %}
+
 {% block title %}<title>Document</title>{% endblock %}
 
 {% block content %}
